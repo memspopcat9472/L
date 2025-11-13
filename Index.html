@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ร้านค้าขายฝนออนไลน์ - เลือกพื้นที่ให้ฝนตก</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(to bottom, #87CEEB, #1E90FF);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        h1 {
+            color: #1E5799;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .main-content {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .products-section {
+            flex: 1;
+        }
+        
+        .area-section {
+            flex: 1;
+        }
+        
+        .section-title {
+            color: #1E5799;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1E5799;
+        }
+        
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .product {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .product.selected {
+            border-color: #FF5722;
+            background-color: #FFF8F6;
+        }
+        
+        .product h3 {
+            color: #1E5799;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .product p {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+        }
+        
+        .price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #FF5722;
+            margin-bottom: 10px;
+        }
+        
+        .area-selector {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .area-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .area-option {
+            background: #f0f8ff;
+            border: 1px solid #1E90FF;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .area-option:hover {
+            background: #e1f0ff;
+        }
+        
+        .area-option.selected {
+            background: #1E5799;
+            color: white;
+        }
+        
+        .custom-area {
+            margin-top: 15px;
+        }
+        
+        .custom-area input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .buy-btn {
+            background: linear-gradient(to right, #FF5722, #FF9800);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .buy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
+        }
+        
+        .buy-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .cart {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .cart h2 {
+            color: #1E5799;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .cart-items {
+            margin-bottom: 20px;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .cart-total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+        
+        .checkout-btn {
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .checkout-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+        
+        .checkout-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .disclaimer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 20px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: modal-appear 0.5s;
+        }
+        
+        @keyframes modal-appear {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .modal h2 {
+            color: #1E5799;
+            margin-bottom: 15px;
+        }
+        
+        .modal p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .close-btn {
+            background: #FF5722;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .rain-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            display: none;
+        }
+        
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 15px;
+            background: linear-gradient(to bottom, transparent, #1E90FF);
+            border-radius: 0 0 5px 5px;
+            animation: rain-fall linear infinite;
+        }
+        
+        @keyframes rain-fall {
+            0% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        
+        .order-summary {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: left;
+        }
+        
+        .order-summary p {
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .products {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ร้านค้าขายฝนออนไลน์</h1>
+            <p class="tagline">เลือกประเภทฝนและพื้นที่ที่ต้องการให้ฝนตก</p>
+        </header>
+        
+        <div class="main-content">
+            <section class="products-section">
+                <h2 class="section-title">เลือกประเภทฝน</h2>
+                <div class="products">
+                    <div class="product" data-product="ฝนตกปรอยๆ" data-price="49">
+                        <h3>ฝนตกปรอยๆ</h3>
+                        <p>เหมาะสำหรับพื้นที่ที่ต้องการความชุ่มชื้นเล็กน้อย</p>
+                        <div class="price">49 บาท</div>
+                    </div>
+                    
+                    <div class="product" data-product="ฝนตกหนัก" data-price="99">
+                        <h3>ฝนตกหนัก</h3>
+                        <p>เหมาะสำหรับพื้นที่ที่ต้องการน้ำฝนในปริมาณมาก</p>
+                        <div class="price">99 บาท</div>
+                    </div>
+                    
+                    <div class="product" data-product="พายุฝนฟ้าคะนอง" data-price="199">
+                        <h3>พายุฝนฟ้าคะนอง</h3>
+                        <p>ระดับสุดยอด! มีทั้งฝน ลม ฟ้าร้อง ฟ้าผ่า</p>
+                        <div class="price">199 บาท</div>
+                    </div>
+                    
+                    <div class="product" data-product="แพ็กเกจฝนตกทั้งวัน" data-price="399">
+                        <h3>แพ็กเกจฝนตกทั้งวัน</h3>
+                        <p>ฝนตกยาวนานตลอดทั้งวัน</p>
+                        <div class="price">399 บาท</div>
+                    </div>
+                </div>
+                
+                <button class="buy-btn" id="addToCartBtn" disabled>เพิ่มลงตะกร้า</button>
+            </section>
+            
+            <section class="area-section">
+                <h2 class="section-title">เลือกพื้นที่ให้ฝนตก</h2>
+                <div class="area-selector">
+                    <div class="area-options">
+                        <div class="area-option" data-area="กรุงเทพมหานคร">กรุงเทพมหานคร</div>
+                        <div class="area-option" data-area="เชียงใหม่">เชียงใหม่</div>
+                        <div class="area-option" data-area="ภูเก็ต">ภูเก็ต</div>
+                        <div class="area-option" data-area="ขอนแก่น">ขอนแก่น</div>
+                        <div class="area-option" data-area="สงขลา">สงขลา</div>
+                        <div class="area-option" data-area="ระยอง">ระยอง</div>
+                    </div>
+                    
+                    <div class="custom-area">
+                        <p>หรือระบุพื้นที่อื่นๆ:</p>
+                        <input type="text" id="customArea" placeholder="กรุณากรอกพื้นที่ที่ต้องการ">
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <section class="cart">
+            <h2>ตะกร้าสินค้า</h2>
+            <div class="cart-items" id="cartItems">
+                <p id="emptyCart">ยังไม่มีสินค้าในตะกร้า</p>
+            </div>
+            <div class="cart-total">
+                รวม: <span id="cartTotal">0</span> บาท
+            </div>
+            <button class="checkout-btn" id="checkoutBtn" disabled>สั่งซื้อฝน</button>
+        </section>
+        
+        <p class="disclaimer">*นี่เป็นเว็บไซต์สำหรับความบันเทิงเท่านั้น ไม่มีการขายฝนจริงๆ โปรดใช้เพื่อความสนุกสนานและไม่สร้างความเดือดร้อนให้ผู้อื่น</p>
+    </div>
+    
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <h2>ขอบคุณสำหรับการสั่งซื้อ!</h2>
+            <div class="order-summary" id="orderSummary">
+                <!-- ข้อมูลการสั่งซื้อจะแสดงที่นี่ -->
+            </div>
+            <p>ฝนของคุณกำลังถูกจัดส่ง... โปรดรอสักครู่!</p>
+            <p>ในระหว่างนี้ คุณสามารถกดปุ่มด้านล่างเพื่อทดลองใช้งานฝนได้เลย</p>
+            <button class="close-btn" id="tryRainBtn">ทดลองฝน</button>
+        </div>
+    </div>
+    
+    <div class="rain-effect" id="rainEffect"></div>
+    
+    <script>
+        // เริ่มต้นตะกร้าสินค้า
+        let cart = [];
+        let selectedProduct = null;
+        let selectedArea = null;
+        
+        // เลือกสินค้า
+        document.querySelectorAll('.product').forEach(product => {
+            product.addEventListener('click', function() {
+                // ล้างการเลือกสินค้าทั้งหมด
+                document.querySelectorAll('.product').forEach(p => {
+                    p.classList.remove('selected');
+                });
+                
+                // เลือกสินค้าปัจจุบัน
+                this.classList.add('selected');
+                selectedProduct = {
+                    name: this.getAttribute('data-product'),
+                    price: parseInt(this.getAttribute('data-price'))
+                };
+                
+                // เปิดใช้งานปุ่มเพิ่มลงตะกร้า
+                document.getElementById('addToCartBtn').disabled = false;
+            });
+        });
+        
+        // เลือกพื้นที่
+        document.querySelectorAll('.area-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // ล้างการเลือกพื้นที่ทั้งหมด
+                document.querySelectorAll('.area-option').forEach(o => {
+                    o.classList.remove('selected');
+                });
+                
+                // เลือกพื้นที่ปัจจุบัน
+                this.classList.add('selected');
+                selectedArea = this.getAttribute('data-area');
+                
+                // ล้างช่องกรอกพื้นที่อื่นๆ
+                document.getElementById('customArea').value = '';
+            });
+        });
+        
+        // จัดการพื้นที่ที่กำหนดเอง
+        document.getElementById('customArea').addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                // ล้างการเลือกพื้นที่ทั้งหมด
+                document.querySelectorAll('.area-option').forEach(o => {
+                    o.classList.remove('selected');
+                });
+                
+                selectedArea = this.value.trim();
+            }
+        });
+        
+        // เพิ่มสินค้าลงตะกร้า
+        document.getElementById('addToCartBtn').addEventListener('click', function() {
+            if (!selectedProduct || !selectedArea) {
+                alert('กรุณาเลือกประเภทฝนและพื้นที่ก่อนเพิ่มลงตะกร้า');
+                return;
+            }
+            
+            // เพิ่มสินค้าลงตะกร้า
+            cart.push({
+                product: selectedProduct.name,
+                price: selectedProduct.price,
+                area: selectedArea
+            });
+            
+            // อัพเดทตะกร้า
+            updateCart();
+            
+            // แสดงข้อความแจ้งเตือน
+            alert(`เพิ่ม ${selectedProduct.name} สำหรับพื้นที่ ${selectedArea} ลงตะกร้าแล้ว!`);
+            
+            // รีเซ็ตการเลือก
+            document.querySelectorAll('.product').forEach(p => {
+                p.classList.remove('selected');
+            });
+            document.querySelectorAll('.area-option').forEach(o => {
+                o.classList.remove('selected');
+            });
+            document.getElementById('customArea').value = '';
+            selectedProduct = null;
+            selectedArea = null;
+            document.getElementById('addToCartBtn').disabled = true;
+        });
+        
+        // อัพเดทตะกร้าสินค้า
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const emptyCart = document.getElementById('emptyCart');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            
+            // ล้างตะกร้า
+            cartItems.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItems.appendChild(emptyCart);
+                emptyCart.style.display = 'block';
+                checkoutBtn.disabled = true;
+            } else {
+                emptyCart.style.display = 'none';
+                checkoutBtn.disabled = false;
+                
+                // แสดงสินค้าในตะกร้า
+                let total = 0;
+                cart.forEach((item, index) => {
+                    const cartItem = document.createElement('div');
+                    cartItem.classList.add('cart-item');
+                    cartItem.innerHTML = `
+                        <div>
+                            <strong>${item.product}</strong><br>
+                            <small>พื้นที่: ${item.area}</small>
+                        </div>
+                        <div>
+                            <span>${item.price} บาท</span><br>
+                            <button class="remove-btn" data-index="${index}">ลบ</button>
+                        </div>
+                    `;
+                    cartItems.appendChild(cartItem);
+                    total += item.price;
+                });
+                
+                // เพิ่ม event listener สำหรับปุ่มลบ
+                document.querySelectorAll('.remove-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        cart.splice(index, 1);
+                        updateCart();
+                    });
+                });
+                
+                cartTotal.textContent = total;
+            }
+        }
+        
+        // จัดการปุ่มสั่งซื้อ
+        document.getElementById('checkoutBtn').addEventListener('click', function() {
+            if (cart.length === 0) {
+                alert('กรุณาเลือกสินค้าก่อนสั่งซื้อ!');
+                return;
+            }
+            
+            // สร้างสรุปการสั่งซื้อ
+            let summaryHTML = '<h3>สรุปการสั่งซื้อ</h3>';
+            let total = 0;
+            
+            cart.forEach(item => {
+                summaryHTML += `<p>${item.product} - พื้นที่ ${item.area}: ${item.price} บาท</p>`;
+                total += item.price;
+            });
+            
+            summaryHTML += `<p><strong>รวมทั้งหมด: ${total} บาท</strong></p>`;
+            
+            document.getElementById('orderSummary').innerHTML = summaryHTML;
+            
+            // แสดงโมดัลสั่งซื้อสำเร็จ
+            document.getElementById('orderModal').style.display = 'flex';
+        });
+        
+        // จัดการปุ่มทดลองฝน
+        document.getElementById('tryRainBtn').addEventListener('click', function() {
+            // ปิดโมดัล
+            document.getElementById('orderModal').style.display = 'none';
+            
+            // แสดงเอฟเฟกต์ฝน
+            const rainEffect = document.getElementById('rainEffect');
+            rainEffect.style.display = 'block';
+            
+            // สร้างฝนตกหนัก
+            createHeavyRain();
+            
+            // เล่นเสียงฝนตก (ถ้ามี)
+            playRainSound();
+            
+            // ซ่อนเอฟเฟกต์ฝนหลังจาก 5 วินาที
+            setTimeout(() => {
+                rainEffect.style.display = 'none';
+                // ลบฝนทั้งหมด
+                const rainDrops = document.querySelectorAll('.rain-drop');
+                rainDrops.forEach(drop => drop.remove());
+                
+                // หยุดเสียงฝน
+                stopRainSound();
+                
+                // รีเซ็ตตะกร้า
+                cart = [];
+                updateCart();
+            }, 5000);
+        });
+        
+        // สร้างฝนตกหนักสำหรับเอฟเฟกต์
+        function createHeavyRain() {
+            const rainEffect = document.getElementById('rainEffect');
+            const rainCount = 200;
+            
+            for (let i = 0; i < rainCount; i++) {
+                const rainDrop = document.createElement('div');
+                rainDrop.classList.add('rain-drop');
+                
+                // สไตล์สำหรับฝนตกหนัก
+                const left = Math.random() * 100;
+                const animationDuration = 0.5 + Math.random();
+                const animationDelay = Math.random() * 2;
+                
+                rainDrop.style.left = `${left}%`;
+                rainDrop.style.animationDuration = `${animationDuration}s`;
+                rainDrop.style.animationDelay = `${animationDelay}s`;
+                
+                rainEffect.appendChild(rainDrop);
+            }
+        }
+        
+        // เล่นเสียงฝนตก
+        function playRainSound() {
+            // ในที่นี้เราจะใช้ Audio Context แทนไฟล์เสียงจริง
+            // ในเว็บจริงคุณสามารถใช้ไฟล์เสียงได้
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const bufferSize = 4096;
+                const brownNoise = (function() {
+                    let lastOut = 0.0;
+                    const node = audioContext.createScriptProcessor(bufferSize, 1, 1);
+                    node.onaudioprocess = function(e) {
+                        const output = e.outputBuffer.getChannelData(0);
+                        for (let i = 0; i < bufferSize; i++) {
+                            const white = Math.random() * 2 - 1;
+                            output[i] = (lastOut + (0.02 * white)) / 1.02;
+                            lastOut = output[i];
+                            output[i] *= 3.5; // ปรับระดับเสียง
+                        }
+                    }
+                    return node;
+                })();
+                
+                brownNoise.connect(audioContext.destination);
+                window.rainSound = { audioContext, brownNoise };
+            } catch (e) {
+                console.log('Web Audio API is not supported in this browser');
+            }
+        }
+        
+        // หยุดเสียงฝนตก
+        function stopRainSound() {
+            if (window.rainSound) {
+                window.rainSound.brownNoise.disconnect();
+                window.rainSound.audioContext.close();
+            }
+        }
+    </script>
+</body>
+</html>
